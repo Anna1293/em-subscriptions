@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  title: Subscriptions API
+  version: 1.0.0
+  description: CRUDL для подписок и подсчёт суммы за период
+
+paths:
+  /api/subscriptions:
+    get:
+      summary: Список подписок
+      parameters:
+        - in: query
+          name: user_id
+          schema: { type: string, format: uuid }
+        - in: query
+          name: service_name
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Создать подписку
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionInput'
+            example:
+              service_name: Yandex Plus
+              price: 400
+              user_id: 60601fee-2bf1-4721-ae6f-7636e79a0cba
+              start_date: 07-2025
+      responses:
+        '201':
+          description: Created
+
+  /api/subscriptions/total:
+    get:
+      summary: Сумма подписок за период
+      parameters:
+        - in: query
+          name: from
+          required: true
+          schema: { type: string, example: 07-2025 }
+        - in: query
+          name: to
+          required: true
+          schema: { type: string, example: 12-2025 }
+        - in: query
+          name: user_id
+          schema: { type: string, format: uuid }
+        - in: query
+          name: service_name
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+
+  /api/subscriptions/{id}:
+    get:
+      summary: Получить подписку
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+    put:
+      summary: Обновить подписку
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionInput'
+      responses:
+        '200':
+          description: OK
+    delete:
+      summary: Удалить подписку
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: No content
+
+components:
+  schemas:
+    SubscriptionInput:
+      type: object
+      required: [service_name, price, user_id, start_date]
+      properties:
+        service_name: { type: string }
+        price: { type: integer }
+        user_id: { type: string, format: uuid }
+        start_date: { type: string, example: 07-2025 }
+        end_date: { type: string, example: 12-2025 }
