@@ -1,6 +1,8 @@
-# Subscriptions API (Effective Mobile test)
+# Subscriptions API
 
-REST-сервис для учёта онлайн-подписок пользователей.
+![CI](https://github.com/Anna1293/em-subscriptions/actions/workflows/ci.yml/badge.svg)
+
+REST-сервис для учёта онлайн-подписок пользователей: PostgreSQL, pagination, aggregation, Docker.
 
 ## Запуск
 
